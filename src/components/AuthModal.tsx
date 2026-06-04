@@ -14,12 +14,14 @@ import { auth, googleProvider } from "@/firebase";
 import { AiOutlineClose } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { FaUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 // Three possible views inside the modal
 type ModalView = "login" | "register" | "forgot";
 
 export default function AuthModal() {
   const dispatch = useDispatch();
+  const router= useRouter();
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
 
   const [view, setView] = useState<ModalView>("login");
@@ -52,6 +54,7 @@ export default function AuthModal() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       dispatch(closeModal());
+      router.push("/for-you");
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") setError("Email already in use.");
       else if (err.code === "auth/invalid-email") setError("Invalid email address.");
@@ -59,6 +62,7 @@ export default function AuthModal() {
       else setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+      
     }
   };
 
@@ -68,6 +72,7 @@ export default function AuthModal() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       dispatch(closeModal());
+      router.push("/for-you");
     } catch (err: any) {
       if (err.code === "auth/user-not-found") setError("No account found with this email.");
       else if (err.code === "auth/wrong-password") setError("Incorrect password.");
@@ -84,6 +89,7 @@ export default function AuthModal() {
     try {
       await signInWithEmailAndPassword(auth, "guest@summarist.com", "guest123");
       dispatch(closeModal());
+      router.push("/for-you");
     } catch {
       setError("Guest login failed. Please try again.");
     } finally {
@@ -97,6 +103,7 @@ export default function AuthModal() {
     try {
       await signInWithPopup(auth, googleProvider);
       dispatch(closeModal());
+      router.push("/for-you");
     } catch {
       setError("Google login failed. Please try again.");
     } finally {
