@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/index";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import BookCard from "@/components/BookCard";
 
 
 
@@ -47,17 +48,60 @@ useEffect(() => {
 if (isLoading) return null;
 if (!uid) return null;
 
-  return (
-  <div>
-    <h1>For You Page</h1>
+ return (
+  <div className="for-you">
+    <h2 className="for-you__title">Selected just for you</h2>
     {booksLoading ? (
-      <p>Loading books...</p>
+      <p>Loading...</p>
     ) : (
-      <div>
-        <h2>Selected: {selectedBook?.title}</h2>
-        <h2>Recommended: {recommendedBooks.length} books</h2>
-        <h2>Suggested: {suggestedBooks.length} books</h2>
-      </div>
+      <>
+        {/* Selected Book */}
+        {selectedBook && (
+          <BookCard
+            id={selectedBook.id}
+            title={selectedBook.title}
+            author={selectedBook.author}
+            subTitle={selectedBook.subTitle}
+            imageLink={selectedBook.imageLink}
+            averageRating={selectedBook.averageRating}
+            subscriptionRequired={selectedBook.subscriptionRequired}
+          />
+        )}
+
+        {/* Recommended Books */}
+        <h2 className="for-you__title">Recommended for you</h2>
+        <div className="for-you__books--wrapper">
+          {recommendedBooks.map((book) => (
+            <BookCard
+              key={book.id}
+              id={book.id}
+              title={book.title}
+              author={book.author}
+              subTitle={book.subTitle}
+              imageLink={book.imageLink}
+              averageRating={book.averageRating}
+              subscriptionRequired={book.subscriptionRequired}
+            />
+          ))}
+        </div>
+
+        {/* Suggested Books */}
+        <h2 className="for-you__title">Suggested books</h2>
+        <div className="for-you__books--wrapper">
+          {suggestedBooks.map((book) => (
+            <BookCard
+              key={book.id}
+              id={book.id}
+              title={book.title}
+              author={book.author}
+              subTitle={book.subTitle}
+              imageLink={book.imageLink}
+              averageRating={book.averageRating}
+              subscriptionRequired={book.subscriptionRequired}
+            />
+          ))}
+        </div>
+      </>
     )}
   </div>
 );
