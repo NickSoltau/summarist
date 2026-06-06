@@ -15,6 +15,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { FaUser } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { doc, setDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 // Three possible views inside the modal
 type ModalView = "login" | "register" | "forgot";
@@ -83,19 +85,30 @@ export default function AuthModal() {
     }
   };
 
-  const handleGuestLogin = async () => {
-    setError("");
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, "guest@summarist.com", "guest123");
-      dispatch(closeModal());
-      router.push("/for-you");
-    } catch {
-      setError("Guest login failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleGuestLogin = async () => {
+  setError("");
+  setLoading(true);
+  try {
+    const result = await signInWithEmailAndPassword(auth, "guest@summarist.com", "guest123");
+    
+    // Reset subscription
+    await setDoc(doc(db, "users", result.user.uid), {
+      subscriptionStatus: "Basic",
+    });
+
+    // Clear library
+    const libraryRef = collection(db, "users", result.user.uid, "library");
+    const snap = await getDocs(libraryRef);
+    await Promise.all(snap.docs.map((d) => deleteDoc(d.ref)));
+
+    dispatch(closeModal());
+    router.push("/for-you");
+  } catch {
+    setError("Guest login failed. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleGoogleLogin = async () => {
     setError("");
