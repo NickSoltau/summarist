@@ -13,7 +13,13 @@ import { AiOutlineHome, AiOutlineSearch, AiOutlineBulb, AiOutlineHighlight, AiOu
 import { IoSettingsOutline } from "react-icons/io5";
 import Link from "next/link";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,19 +32,24 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? "sidebar--open" : ""}`}>
       <div className="sidebar__logo--wrapper">
         <img src="/assets/logo.png" alt="logo" className="sidebar__logo" />
       </div>
       <div className="sidebar__items--wrapper">
-        <Link href="/for-you" className={`sidebar__item ${pathname === "/for-you" ? "sidebar__item--active" : ""}`}>
+        <Link href="/for-you" 
+        className={`sidebar__item ${pathname === "/for-you" ? "sidebar__item--active" : ""}`}
+        onClick={onClose}>
           <AiOutlineHome />
           <span>For You</span>
         </Link>
-        <Link href="/library" className={`sidebar__item ${pathname === "/library" ? "sidebar__item--active" : ""}`}>
+        <div 
+          className={`sidebar__item ${pathname === "/library" ? "sidebar__item--active" : ""}`}
+          onClick={() => { onClose?.(); router.push("/library"); }}
+        >
           <BsBookmark />
           <span>My Library</span>
-        </Link>
+        </div>
         <div className="sidebar__item sidebar__item--disabled">
           <AiOutlineHighlight />
           <span>Highlights</span>
@@ -47,17 +58,23 @@ export default function Sidebar() {
           <AiOutlineSearch />
           <span>Search</span>
         </div>
-        <Link href="/settings" className={`sidebar__item ${pathname === "/settings" ? "sidebar__item--active" : ""}`}>
+        <div 
+          className={`sidebar__item ${pathname === "/settings" ? "sidebar__item--active" : ""}`}
+          onClick={() => { onClose?.(); router.push("/settings"); }}
+        >
           <IoSettingsOutline />
           <span>Settings</span>
-        </Link>
+        </div>
         <div className="sidebar__item sidebar__item--disabled">
           <AiOutlineBulb />
           <span>Help & Support</span>
         </div>
         <div
           className="sidebar__item"
-          onClick={uid ? handleLogout : () => dispatch(openModal())}
+          onClick={() => {
+            uid ? handleLogout() : dispatch(openModal());
+            onClose?.();
+          }}
         >
           <AiOutlineLogout />
           <span>{uid ? "Logout" : "Login"}</span>
