@@ -5,6 +5,7 @@ import { RootState } from "@/store/index";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import BookCard, {BookCardSkeleton} from "@/components/BookCard";
+import SelectedBook from "@/components/SelectedBook";
 
 
 
@@ -68,13 +69,13 @@ if (!uid) return null;
       <>
         {/* Selected Book */}
         {selectedBook && (
-          <BookCard
+          <SelectedBook
             id={selectedBook.id}
             title={selectedBook.title}
             author={selectedBook.author}
             subTitle={selectedBook.subTitle}
             imageLink={selectedBook.imageLink}
-            averageRating={selectedBook.averageRating}
+            
             subscriptionRequired={selectedBook.subscriptionRequired}
           />
         )}

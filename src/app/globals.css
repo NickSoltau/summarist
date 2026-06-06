@@ -1414,3 +1414,69 @@ button:disabled {
   display: block;
 }
 
+/* SELECTED BOOK */
+.selected__book {
+  background-color: #fbefd6;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  margin-bottom: 32px;
+  position: relative;
+  max-width: 640px;
+}
+
+.selected__book--subtitle {
+  font-size: 14px;
+  color: #394547;
+  font-weight: 300;
+}
+
+.selected__book--content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.selected__book--divider {
+  width: 1px;
+  height: 100px;
+  background-color: #032b41;
+  opacity: 0.2;
+}
+
+.selected__book--img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.selected__book--info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selected__book--title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #032b41;
+}
+
+.selected__book--author {
+  font-size: 14px;
+  color: #394547;
+}
+
+.selected__book--duration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #394547;
+  margin-top: 8px;
+}
+
