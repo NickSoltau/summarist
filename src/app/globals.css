@@ -535,8 +535,14 @@ justify-content: center;
     order: 1;
   }
 
+  .statistics__content--header {
+    align-items: center;
+    text-align: center;
+  }
+
   .statistics__content--header-second {
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
 
   .statistics__data--title {
