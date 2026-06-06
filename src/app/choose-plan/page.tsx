@@ -5,6 +5,11 @@ import { AiFillFileText } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 import { GiFlowerPot } from "react-icons/gi";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/index";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import { useRouter } from "next/navigation";
 import Footer from "@/components/Footer"
 
 const faqs = [
@@ -33,6 +38,21 @@ const faqs = [
 export default function ChoosePlanPage() {
   const [selectedPlan, setSelectedPlan] = useState<"yearly" | "monthly">("yearly");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const { uid } = useSelector((state: RootState) => state.user);
+const router = useRouter();
+
+const handleSubscribe = async () => {
+  if (!uid) return;
+  try {
+    await setDoc(doc(db, "users", uid), {
+      subscriptionStatus: selectedPlan === "yearly" ? "premium-plus" : "premium",
+    });
+    router.push("/for-you");
+  } catch (err) {
+    console.error("Failed to subscribe", err);
+  }
+};
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -110,7 +130,7 @@ export default function ChoosePlanPage() {
       </div>
 
       {/* CTA */}
-      <button className="btn plan__btn">
+      <button className="btn plan__btn" onClick={handleSubscribe}>
         {selectedPlan === "yearly" ? "Start your free 7-day trial" : "Get started"}
       </button>
       <p className="plan__disclaimer">
