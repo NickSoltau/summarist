@@ -447,6 +447,20 @@ button:disabled {
   font-weight: 500;
 }
 
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 160px;
+  }
+
+  .with__sidebar--content {
+    margin-left: 160px;
+  }
+
+  .player__bar {
+    left: 160px;
+  }
+}
+
 @media (max-width: 768px) {
   .landing__content {
     display: flex;
@@ -536,11 +550,62 @@ button:disabled {
   .remove--tablet {
     display: none;
   }
+  .with__sidebar {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    padding: 8px 16px;
+    overflow-x: auto;
+  }
+
+  .sidebar__items--wrapper {
+    flex-direction: row;
+    gap: 0;
+  }
+
+  .sidebar__logo--wrapper {
+    display: none;
+  }
+
+  .with__sidebar--content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .player__bar {
+    left: 0;
+  }
+
+  .search__bar--wrapper {
+    padding: 8px 16px;
+  }
 }
 
 @media (max-width: 576px) {
   .nav__list--mobile {
     display: none;
+  }
+  .book__page--content {
+    flex-direction: column;
+  }
+
+  .book__page--right {
+    display: flex;
+    justify-content: center;
+  }
+
+  .plan__features--wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .plan__cards {
+    flex-direction: column;
   }
 }
 /* AUTH MODAL */
