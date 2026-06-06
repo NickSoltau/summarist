@@ -398,6 +398,7 @@ justify-content: center;
 
 .footer__block {
   z-index: 1;
+  min-width: 140px;
 }
 
 .footer__link--title {
@@ -522,7 +523,7 @@ justify-content: center;
   }
 
   .footer__top--wrapper {
-    flex-direction: column;
+    flex-direction: wrap;
     gap: 32px;
   }
 
@@ -672,6 +673,15 @@ justify-content: center;
 
   .plan__cards {
     flex-direction: column;
+  }
+  .footer__top--wrapper {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+
+  .footer__block {
+    min-width: calc(50% - 12px);
   }
 
 }
