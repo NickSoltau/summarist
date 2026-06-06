@@ -6,6 +6,8 @@ import Image from "next/image";
 import NavBar from "@/components/NavBar";
 import LoginButton from "@/components/LoginButton";
 import Footer from "@/components/Footer";
+import AnimatedHeadings from "@/components/AnimatedHeadings";
+import AnimatedHeadings2 from "@/components/AnimatedHeadings2";
 
 export default function Home() {
   return (
@@ -66,14 +68,7 @@ export default function Home() {
             </div>
 
             <div className="statistics__wrapper">
-              <div className="statistics__content--header">
-                <div className="statistics__heading">Enhance your knowledge</div>
-                <div className="statistics__heading">Achieve greater success</div>
-                <div className="statistics__heading">Improve your health</div>
-                <div className="statistics__heading">Develop better parenting skills</div>
-                <div className="statistics__heading">Increase happiness</div>
-                <div className="statistics__heading">Be the best version of yourself!</div>
-              </div>
+              <AnimatedHeadings />
               <div className="statistics__content--details">
                 <div className="statistics__data">
                   <div className="statistics__data--number">93%</div>
@@ -105,14 +100,7 @@ export default function Home() {
                   <div className="statistics__data--title">of Summarist members <b>feel more informed</b> about current events and industry trends since using the platform.</div>
                 </div>
               </div>
-              <div className="statistics__content--header statistics__content--header-second">
-                <div className="statistics__heading">Expand your learning</div>
-                <div className="statistics__heading">Accomplish your goals</div>
-                <div className="statistics__heading">Strengthen your vitality</div>
-                <div className="statistics__heading">Become a better caregiver</div>
-                <div className="statistics__heading">Improve your mood</div>
-                <div className="statistics__heading">Maximize your abilities</div>
-              </div>
+              <AnimatedHeadings2 />
             </div>
           </div>
         </div>

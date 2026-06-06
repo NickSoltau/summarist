@@ -213,6 +213,7 @@ button:disabled {
   font-weight: 500;
   color: #6b757b;
   margin-bottom: 16px;
+  transition: color 500ms ease;
 }
 
 .statistics__heading:last-child {
