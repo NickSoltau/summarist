@@ -167,6 +167,11 @@ button:disabled {
   margin-bottom: 24px;
   line-height: 1.5;
 }
+#landing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* FEATURES */
 .features__wrapper {
@@ -176,7 +181,7 @@ button:disabled {
   margin-bottom: 96px;
 }
 
-.features {
+#features {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -274,9 +279,20 @@ button:disabled {
 }
 
 /* REVIEWS */
+
+#reviews {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .reviews__wrapper {
   max-width: 600px;
   margin: 0 auto;
+}
+.reviews__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .review {
@@ -316,6 +332,11 @@ button:disabled {
 }
 
 /* NUMBERS */
+#numbers {
+display: flex;
+align-items: center;
+justify-content: center;
+}
 .numbers {
   background-color: #d7e9ff;
   display: flex;
@@ -454,10 +475,17 @@ button:disabled {
 
   .with__sidebar--content {
     margin-left: 160px;
+    width: calc(100% - 160px);
   }
 
   .player__bar {
     left: 160px;
+    gap: 16px;
+    padding: 12px 16px;
+  }
+
+  .player__bar--info {
+    display: none;
   }
 }
 
@@ -554,7 +582,7 @@ button:disabled {
     flex-direction: column;
   }
 
-  .sidebar {
+.sidebar {
     width: 100%;
     height: auto;
     position: relative;
@@ -577,13 +605,51 @@ button:disabled {
     width: 100%;
   }
 
-  .player__bar {
-    left: 0;
-  }
 
   .search__bar--wrapper {
     padding: 8px 16px;
   }
+  .book__page--buttons {
+    flex-direction: column;
+  }
+
+  .book__page--btn {
+    max-width: 100%;
+  }
+  .player__bar {
+    left: 0;
+    flex-direction: column;
+    padding: 8px 16px;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .player__bar--img {
+    display: none;
+  }
+
+  .player__bar--info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .player__bar--controls {
+    gap: 16px;
+  }
+
+  .player__btn--play {
+    font-size: 28px;
+  }
+
+  .player__bar--progress {
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+    font-size: 11px;
+  }
+
 }
 
 @media (max-width: 576px) {
@@ -607,6 +673,7 @@ button:disabled {
   .plan__cards {
     flex-direction: column;
   }
+
 }
 /* AUTH MODAL */
 .modal__backdrop {

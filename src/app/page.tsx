@@ -107,7 +107,7 @@ export default function Home() {
       </section>
 
       <section id="reviews">
-        <div className="row">
+        <div className="row reviews__row">
           <div className="container">
             <div className="section__title">What our members say</div>
             <div className="reviews__wrapper">
