@@ -17,16 +17,16 @@ export default function BookPage() {
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isInLibrary, setIsInLibrary] = useState(false);
-
   const dispatch = useDispatch();
-const { uid } = useSelector((state: RootState) => state.user);
+  const { uid } = useSelector((state: RootState) => state.user);
+  const [subscription, setSubscription] = useState<string>("Basic");
 
 const handleReadListen = () => {
   if (!uid) {
     dispatch(openModal());
     return;
   }
-  if (book.subscriptionRequired) {
+  if (book.subscriptionRequired && subscription === "Basic") {
     router.push("/choose-plan");
     return;
   }
@@ -59,6 +59,22 @@ useEffect(() => {
     }
     fetchBook();
   }, [id]);
+
+  useEffect(() => {
+  if (!uid) return;
+  async function fetchSubscription() {
+    try {
+      const ref = doc(db, "users", uid!);
+      const snap = await getDoc(ref);
+      if (snap.exists() && snap.data().subscriptionStatus) {
+        setSubscription(snap.data().subscriptionStatus);
+      }
+    } catch (err) {
+      console.error("Failed to fetch subscription", err);
+    }
+  }
+  fetchSubscription();
+}, [uid]);
 
   const handleLibrary = async () => {
   if (!uid) {
