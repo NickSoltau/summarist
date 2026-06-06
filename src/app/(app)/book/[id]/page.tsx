@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { RootState } from "@/store/index";
 import { openModal } from "@/store/modalSlice";
 import { useRouter } from "next/navigation";
+import Skeleton from "@/components/Skeleton";
 
 export default function BookPage() {
   const { id } = useParams();
@@ -46,7 +47,42 @@ const handleReadListen = () => {
     fetchBook();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+  <div className="book__page">
+    <div className="book__page--content">
+      <div className="book__page--left">
+        <Skeleton width="60%" height="32px" />
+        <div style={{ marginTop: "8px" }}>
+          <Skeleton width="40%" height="20px" />
+        </div>
+        <div style={{ marginTop: "8px" }}>
+          <Skeleton width="80%" height="16px" />
+        </div>
+        <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <Skeleton width="50%" height="16px" />
+          <Skeleton width="40%" height="16px" />
+          <Skeleton width="45%" height="16px" />
+        </div>
+        <div style={{ marginTop: "24px", display: "flex", gap: "16px" }}>
+          <Skeleton width="140px" height="40px" />
+          <Skeleton width="140px" height="40px" />
+        </div>
+        <div style={{ marginTop: "24px" }}>
+          <Skeleton width="100%" height="16px" />
+          <div style={{ marginTop: "4px" }}>
+            <Skeleton width="100%" height="16px" />
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            <Skeleton width="70%" height="16px" />
+          </div>
+        </div>
+      </div>
+      <div className="book__page--right">
+        <Skeleton width="180px" height="240px" />
+      </div>
+    </div>
+  </div>
+);
   if (!book) return <p>Book not found</p>;
 
 return (

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/index";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import BookCard from "@/components/BookCard";
+import BookCard, {BookCardSkeleton} from "@/components/BookCard";
 
 
 
@@ -52,8 +52,19 @@ if (!uid) return null;
   <div className="for-you">
     <h2 className="for-you__title">Selected just for you</h2>
     {booksLoading ? (
-      <p>Loading...</p>
-    ) : (
+  <div>
+    <h2 className="for-you__title">Selected just for you</h2>
+    <BookCardSkeleton />
+    <h2 className="for-you__title">Recommended for you</h2>
+    <div className="for-you__books--wrapper">
+      {[...Array(5)].map((_, i) => <BookCardSkeleton key={i} />)}
+    </div>
+    <h2 className="for-you__title">Suggested books</h2>
+    <div className="for-you__books--wrapper">
+      {[...Array(5)].map((_, i) => <BookCardSkeleton key={i} />)}
+    </div>
+  </div>
+) : (
       <>
         {/* Selected Book */}
         {selectedBook && (

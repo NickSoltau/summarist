@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { BsStarFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
+import Skeleton from "./Skeleton";
 
 interface BookCardProps {
   id: string;
@@ -43,6 +44,27 @@ export default function BookCard({
         <div className="book__card--detail">
           <BsStarFill />
           <span>{averageRating}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function BookCardSkeleton() {
+  return (
+    <div className="book__card">
+      <Skeleton width="100%" height="172px" />
+      <div style={{ marginTop: "8px" }}>
+        <Skeleton width="80%" height="16px" />
+        <div style={{ marginTop: "4px" }}>
+          <Skeleton width="60%" height="14px" />
+        </div>
+        <div style={{ marginTop: "4px" }}>
+          <Skeleton width="90%" height="14px" />
+        </div>
+        <div style={{ marginTop: "8px", display: "flex", gap: "12px" }}>
+          <Skeleton width="40%" height="13px" />
+          <Skeleton width="30%" height="13px" />
         </div>
       </div>
     </div>
