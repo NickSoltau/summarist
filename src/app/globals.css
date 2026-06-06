@@ -1480,3 +1480,14 @@ button:disabled {
   margin-top: 8px;
 }
 
+/* LIBRARY PAGE */
+.library__page {
+  padding: 24px;
+}
+
+.library__empty {
+  font-size: 16px;
+  color: #6b757b;
+  margin-top: 24px;
+}
+

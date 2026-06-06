@@ -8,12 +8,15 @@ import { RootState } from "@/store/index";
 import { openModal } from "@/store/modalSlice";
 import { useRouter } from "next/navigation";
 import Skeleton from "@/components/Skeleton";
+import { doc, setDoc, deleteDoc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 export default function BookPage() {
   const { id } = useParams();
   const router = useRouter()
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isInLibrary, setIsInLibrary] = useState(false);
 
   const dispatch = useDispatch();
 const { uid } = useSelector((state: RootState) => state.user);
@@ -29,6 +32,16 @@ const handleReadListen = () => {
   }
   router.push(`/player/${id}`);
 };
+
+useEffect(() => {
+  if (!uid || !id) return;
+  async function checkLibrary() {
+    const ref = doc(db, "users", uid!, "library", id as string);
+    const snap = await getDoc(ref);
+    setIsInLibrary(snap.exists());
+  }
+  checkLibrary();
+}, [uid, id]);
 
   useEffect(() => {
     async function fetchBook() {
@@ -46,6 +59,30 @@ const handleReadListen = () => {
     }
     fetchBook();
   }, [id]);
+
+  const handleLibrary = async () => {
+  if (!uid) {
+    dispatch(openModal());
+    return;
+  }
+  const ref = doc(db, "users", uid, "library", id as string);
+  if (isInLibrary) {
+    await deleteDoc(ref);
+    setIsInLibrary(false);
+  } else {
+    await setDoc(ref, {
+      id,
+      title: book.title,
+      author: book.author,
+      subTitle: book.subTitle,
+      imageLink: book.imageLink,
+      audioLink: book.audioLink,
+      averageRating: book.averageRating,
+      subscriptionRequired: book.subscriptionRequired,
+    });
+    setIsInLibrary(true);
+  }
+};
 
   if (loading) return (
   <div className="book__page">
@@ -108,7 +145,9 @@ return (
           <button className="btn book__page--btn" onClick={handleReadListen}>Listen</button>
         </div>
         <div className="book__page--library">
-          <button className="book__page--library-btn">+ Add title to My Library</button>
+          <button className="book__page--library-btn" onClick={handleLibrary}>
+            {isInLibrary ? "✓ Saved to My Library" : "+ Add title to My Library"}
+          </button>
         </div>
         <div className="book__page--tags--wrapper">
           <h3>What's it about?</h3>
