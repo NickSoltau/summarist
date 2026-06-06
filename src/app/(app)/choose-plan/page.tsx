@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { AiFillFileText } from "react-icons/ai";
+import { AiFillFileText, AiOutlineLeft, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
 import { GiFlowerPot } from "react-icons/gi";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/index";
 import { doc, setDoc } from "firebase/firestore";
@@ -59,8 +58,13 @@ const handleSubscribe = async () => {
   };
 
   return (
+    <>
+    <button className="plan__back--btn" onClick={() => router.back()}>
+        <AiOutlineLeft />
+        <span>Back</span>
+      </button>
     <div className="plan__page">
-
+      
       {/* HERO */}
      <div className="plan__hero">
         <div className="plan__hero--content">
@@ -159,5 +163,6 @@ const handleSubscribe = async () => {
       <Footer />
 
     </div>
+    </>
   );
 }

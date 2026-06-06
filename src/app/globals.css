@@ -1121,6 +1121,7 @@ button:disabled {
 /* CHOOSE PLAN PAGE */
 .plan__page {
   width: 100%;
+  position: relative;
 }
 
 .plan__hero {
@@ -1489,5 +1490,23 @@ button:disabled {
   font-size: 16px;
   color: #6b757b;
   margin-top: 24px;
+}
+
+.plan__back--btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  color: #032b41;
+  font-size: 16px;
+  padding: 16px 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 60px;
+  left: 224px;
+}
+
+.plan__back--btn:hover {
+  color: #2bd97c;
 }
 
