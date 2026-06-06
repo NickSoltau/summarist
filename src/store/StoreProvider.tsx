@@ -14,7 +14,7 @@ function AuthListener({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(setUser({ uid: user.uid, email: user.email }));
+        dispatch(setUser({ uid: user.uid, email: user.email, isLoading:false }));
       } else {
         dispatch(clearUser());
       }
