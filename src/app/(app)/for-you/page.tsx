@@ -75,6 +75,8 @@ if (!uid) return null;
             author={selectedBook.author}
             subTitle={selectedBook.subTitle}
             imageLink={selectedBook.imageLink}
+            audioLink={selectedBook.audioLink}
+            
             
             subscriptionRequired={selectedBook.subscriptionRequired}
           />
@@ -93,6 +95,7 @@ if (!uid) return null;
               imageLink={book.imageLink}
               averageRating={book.averageRating}
               subscriptionRequired={book.subscriptionRequired}
+              audioLink={selectedBook.audioLink}
             />
           ))}
         </div>
@@ -110,6 +113,7 @@ if (!uid) return null;
               imageLink={book.imageLink}
               averageRating={book.averageRating}
               subscriptionRequired={book.subscriptionRequired}
+              audioLink={selectedBook.audioLink}
             />
           ))}
         </div>

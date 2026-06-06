@@ -5,6 +5,7 @@ import Image from "next/image";
 import { BsStarFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import Skeleton from "./Skeleton";
+import useAudioDuration from "@/hooks/useAudioDuration";
 
 interface BookCardProps {
   id: string;
@@ -14,6 +15,7 @@ interface BookCardProps {
   imageLink: string;
   averageRating: number;
   subscriptionRequired: boolean;
+  audioLink: string;
 }
 
 export default function BookCard({
@@ -24,8 +26,10 @@ export default function BookCard({
   imageLink,
   averageRating,
   subscriptionRequired,
+  audioLink,
 }: BookCardProps) {
   const router = useRouter();
+  const duration= useAudioDuration(audioLink)
 
   return (
     <div className="book__card" onClick={() => router.push(`/book/${id}`)}>
@@ -39,7 +43,7 @@ export default function BookCard({
       <div className="book__card--details">
         <div className="book__card--detail">
           <AiOutlineClockCircle />
-          <span>04:00</span>
+          <span>{duration || "..."}</span>
         </div>
         <div className="book__card--detail">
           <BsStarFill />

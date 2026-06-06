@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { AiOutlineClockCircle, AiOutlinePlayCircle } from "react-icons/ai";
+import useAudioDuration from "@/hooks/useAudioDuration";
 
 interface SelectedBookProps {
   id: string;
@@ -10,6 +11,7 @@ interface SelectedBookProps {
   subTitle: string;
   imageLink: string;
   subscriptionRequired: boolean;
+  audioLink: string;
 }
 
 export default function SelectedBook({
@@ -19,8 +21,10 @@ export default function SelectedBook({
   subTitle,
   imageLink,
   subscriptionRequired,
+  audioLink,
 }: SelectedBookProps) {
   const router = useRouter();
+  const duration= useAudioDuration(audioLink)
 
   return (
     <div className="selected__book" onClick={() => router.push(`/book/${id}`)}>
@@ -38,7 +42,7 @@ export default function SelectedBook({
           <div className="selected__book--duration">
             <AiOutlinePlayCircle />
             <AiOutlineClockCircle />
-            <span>3 mins 23 secs</span>
+            <span>{duration || "..."}</span>
           </div>
         </div>
       </div>
