@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useState, useEffect } from "react";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 export default function SettingsPage() {
   const { uid, email } = useSelector((state: RootState) => state.user);
@@ -18,15 +19,19 @@ export default function SettingsPage() {
 
  useEffect(() => {
   if (!uid) return;
+
   async function fetchSubscription() {
     try {
       const subsRef = collection(db, "customers", uid!, "subscriptions");
-      const snap = await getDocs(subsRef);
-      if (!snap.empty) {
-        const sub = snap.docs[0].data();
-        if (sub.status === "active" || sub.status === "trialing") {
-          const role = sub.items?.[0]?.price?.product?.metadata?.firebaseRole;
-          setSubscription(role || "premium");
+    const snap = await getDocs(subsRef);
+    if (!snap.empty) {
+      const sub = snap.docs[0].data();
+      
+      if (sub.status === "active" || sub.status === "trialing") {
+        const role = sub.items?.[0]?.price?.product?.metadata?.firebaseRole;
+
+       
+        setSubscription(role || "premium");
         }
       }
     } catch (err) {
@@ -38,6 +43,21 @@ export default function SettingsPage() {
   fetchSubscription();
 }, [uid]);
 
+const handleManageSubscription = async () => {
+  try {
+    const functions = getFunctions();
+    const functionRef = httpsCallable(
+      functions,
+      "ext-firestore-stripe-payments-createPortalLink"
+    );
+    const { data }: any = await functionRef({
+      returnUrl: window.location.origin + "/settings",
+    });
+    window.location.assign(data.url);
+  } catch (err) {
+    console.error("Failed to open portal", err);
+  }
+};
   if (!uid) {
     return (
       <div className="settings__page">
@@ -61,12 +81,19 @@ export default function SettingsPage() {
             <p className="settings__section--value">
               {subLoading ? "Loading..." : subscription}
             </p>
-            {subscription === "Basic" && (
+           {subscription === "Basic" ? (
               <button
                 className="btn settings__upgrade--btn"
                 onClick={() => router.push("/choose-plan")}
               >
                 Upgrade to Premium
+              </button>
+            ) : (
+              <button
+                className="btn settings__upgrade--btn"
+                onClick={handleManageSubscription}
+              >
+                Manage Subscription
               </button>
             )}
         </div>
