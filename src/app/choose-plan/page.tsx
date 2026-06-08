@@ -6,7 +6,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { GiFlowerPot } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/index";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/Footer"
@@ -37,19 +37,44 @@ const faqs = [
 export default function ChoosePlanPage() {
   const [selectedPlan, setSelectedPlan] = useState<"yearly" | "monthly">("yearly");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { uid } = useSelector((state: RootState) => state.user);
 const router = useRouter();
 
 const handleSubscribe = async () => {
-  if (!uid) return;
+  if (!uid) {
+    router.push("/");
+    return;
+  }
+  setLoading(true);
+
   try {
-    await setDoc(doc(db, "users", uid), {
-      subscriptionStatus: selectedPlan === "yearly" ? "premium-plus" : "premium",
+    const docRef = await addDoc(
+      collection(db, "customers", uid, "checkout_sessions"),
+      {
+        price: selectedPlan === "yearly"
+          ? "price_1Tg3Z2ClkxGgWDmuUesrqxza"
+          : "price_1Tg3aGClkxGgWDmu3vt3bcwt",
+        success_url: `${window.location.origin}/for-you`,
+        cancel_url: `${window.location.origin}/choose-plan`,
+        trial_period_days: selectedPlan === "yearly" ? 7 : 0,
+      }
+    );
+
+    onSnapshot(docRef, (snap) => {
+      const data = snap.data();
+      if (data?.url) {
+        window.location.assign(data.url);
+      }
+      if (data?.error) {
+        console.error("Stripe error:", data.error);
+        setLoading(false);
+      }
     });
-    router.push("/for-you");
   } catch (err) {
-    console.error("Failed to subscribe", err);
+    console.error("Failed to create checkout session", err);
+    setLoading(false);
   }
 };
 
@@ -134,8 +159,8 @@ const handleSubscribe = async () => {
       </div>
 
       {/* CTA */}
-      <button className="btn plan__btn" onClick={handleSubscribe}>
-        {selectedPlan === "yearly" ? "Start your free 7-day trial" : "Get started"}
+      <button className="btn plan__btn" onClick={handleSubscribe} disabled={loading}>
+        {loading ? "Please wait..." : selectedPlan === "yearly" ? "Start your free 7-day trial" : "Get started"}
       </button>
       <p className="plan__disclaimer">
         Cancel your trial at any time before it ends, and you won't be charged.

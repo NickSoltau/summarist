@@ -5,7 +5,7 @@ import { RootState } from "@/store/index";
 import { useDispatch } from "react-redux";
 import { openModal } from "@/store/modalSlice";
 import { useRouter } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useState, useEffect } from "react";
 
@@ -16,14 +16,18 @@ export default function SettingsPage() {
   const [subscription, setSubscription] = useState<string>("Basic");
   const [subLoading, setSubLoading] = useState(true);
 
-  useEffect(() => {
+ useEffect(() => {
   if (!uid) return;
   async function fetchSubscription() {
     try {
-      const ref = doc(db, "users", uid!);
-      const snap = await getDoc(ref);
-      if (snap.exists() && snap.data().subscriptionStatus) {
-        setSubscription(snap.data().subscriptionStatus);
+      const subsRef = collection(db, "customers", uid!, "subscriptions");
+      const snap = await getDocs(subsRef);
+      if (!snap.empty) {
+        const sub = snap.docs[0].data();
+        if (sub.status === "active" || sub.status === "trialing") {
+          const role = sub.items?.[0]?.price?.product?.metadata?.firebaseRole;
+          setSubscription(role || "premium");
+        }
       }
     } catch (err) {
       console.error("Failed to fetch subscription", err);
